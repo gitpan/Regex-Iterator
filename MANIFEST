@@ -9,3 +9,5 @@ lib/Regex/Iterator.pm
 t/01nothing.t
 t/02multiple.t
 t/03qr.t
+t/04complicated.t
+

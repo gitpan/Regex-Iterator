@@ -3,7 +3,7 @@ package Regex::Iterator;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = "0.2";
+$VERSION = "0.3";
 
 
 =pod
@@ -14,13 +14,20 @@ Regex::Iterator - provides an iterator interface to regexps
 
 =head1 SYNOPSIS
 
+	my $string = 'string to search';
+	my $re     = qr/[aeiou]/i; 
+	# a plain string of 'aeiou' would work as well
+
+	
 
 	my $it = Regex::Iterator->new($regex, $string);
 
 	while (my $match = $it->match) {
-		$it->replace('replaced') if $match eq 'replaceable';
+		$it->replace('o');
 	}
-	print $it->result,"\n";
+	print $it->result,"\n"; # 'strong to soorch'
+	print $it->string,"\n"; # 'string to search'
+
 
 =head1 DESCRIPTION
 
@@ -42,17 +49,69 @@ C<regex> can be the result of a C<qr{}>
 
 sub new {
     my ($class, $re, $string) = @_;
-	$re = qr/$re/ unless ref($re) eq 'Regexp';
 
-    my $self          = {};
-    $self->{_re}      = $re;
-    $self->{_result}  = "";
-    $self->{_remain}  = $string;
-    $self->{_match}   = undef;
-    
+    my $self          = bless {}, $class;
+	
+	$self->string($string);
+	$self->re($re);
+
 
     return bless $self, $class;
 
+}
+
+
+=head2 string [ string ]
+
+Gets the current string we're matching against.
+
+If a new string is optionally passed in then it will be set 
+as the string for the iterator to match on and the iterator 
+will be reset.
+
+Setting returns the object itself to allow chaining.
+
+=cut
+
+sub string {
+	my $self = shift;
+
+	return $self->{_orig} unless @_;
+
+	$self->{_orig} = $_[0];
+	$self->rewind;
+
+	return $self;
+}
+
+
+
+=head2 re [ regex ]
+
+Gets the current regex we're matching with.
+
+If a new regex is optionally passed in then it will be set 
+as the regex for the iterator to match with. Does not 
+reset the iterator so you can change patterns halfway through 
+an iteration if necessary. The regex will be automatically 
+compiled using C<qr//> for speed.
+
+Setting returns the object itself to allow chaining.
+
+=cut
+
+sub re {
+	my $self = shift;
+
+	return $self->{_re} unless @_;
+	
+	my $re  = $_[0];  
+	$re = qr/$re/ unless ref($re) eq 'Regexp';
+
+
+	$self->{_re} = $re;
+
+	return $self;
 }
 
 =head2 match
@@ -101,15 +160,33 @@ Replaces the current match with I<replacement>
 
 =cut
 
-
-
-
 sub replace {
         my ($self, $replace) = @_;
-        return unless defined $self->{_match};
+        return 0 unless defined $self->{_match};
         $self->{_match} = $replace;
-
+		return 1;
 }
+
+
+=head2 rewind
+
+Rewinds the object's state to the original string (as supplied by set_string),
+this allows matching to begin from the beginning again
+
+=cut
+
+sub rewind {
+  my $self = shift;
+
+  $self->{_remain} = $self->string;
+  $self->{$_}      = '' for qw( _match _result );
+
+  return $self;
+}
+
+
+
+
 
 =head2 result
 
@@ -122,6 +199,9 @@ sub result {
 
 	return join '', grep { defined } @$self{qw/ _result _match _remain /};
 }
+
+
+# internal iterator method
 
 sub _next {
          my $self = shift;
@@ -144,7 +224,11 @@ Distributed under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Copyright (c) 2003, Simon Wistow <simon@thegestalt.org>
+Copyright (c) 2004, 
+
+Simon Wistow <simon@thegestalt.org>	
+
+Matt Lawrence <mattlaw@cpan.org>
 
 =head1 SEE ALSO
 

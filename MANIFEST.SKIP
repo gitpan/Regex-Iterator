@@ -1,7 +1,8 @@
-\.svn
-\.cvsignore
-blib
-pm_to_blib
-Makefile
-Build
-_build
+^\.svn
+^\.cvsignore$
+^blib
+^pm_to_blib
+^Makefile$
+^Build$
+^_build
+tar.gz$
