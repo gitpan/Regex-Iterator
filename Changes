@@ -1,3 +1,8 @@
+2004-08-22 0.2 Doh!
+
+Didn't put Build.PL and Makefile.PL in the MANIFEST.
+How stupid is that?
+
 2004-08-21 0.1 Initial release
 
 Based on work for URI::Find::Iterator.
