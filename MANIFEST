@@ -1,0 +1,9 @@
+Changes
+Readme
+MANIFEST			This list of files
+MANIFEST.SKIP
+META.yml
+lib/Regex/Iterator.pm
+t/01nothing.t
+t/02multiple.t
+t/03qr.t

@@ -1,0 +1,15 @@
+--- #YAML:1.0
+name: Regex-Iterator
+version: 0.1
+author:
+  - |-
+    Copyright (c) 2003, Simon Wistow <simon@thegestalt.org>
+abstract: provides an iterator interface to regexps
+license: perl
+requires:
+  Test::More: 0
+provides:
+  Regex::Iterator:
+    file: lib/Regex/Iterator.pm
+    version: 0.1
+generated_by: Module::Build version 0.25
