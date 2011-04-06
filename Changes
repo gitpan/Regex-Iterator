@@ -1,3 +1,7 @@
+2011-04-06 0.4 Fix breaking tests
+
+We were using a bad check to see if something's a regex which broke under bleadperl.
+
 2004-09-16 0.3 Integrate changes from Matt Lawrence
 
 Matt Lawrence sent me the version of Regexp::Iterator 

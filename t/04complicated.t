@@ -37,8 +37,8 @@ ok(!eval {
   'chaining works'
 );
 
-is($i->string, $string, 'set string works');
-is($i->re,	   "(?-xism:$re)",	    'set re works');
+is($i->string, $string,   'set string works');
+is(ref($i->re),	"Regexp", 'set re works');
 
 
 

@@ -6,3 +6,5 @@
 ^Build$
 ^_build
 tar.gz$
+^MYMETA.yml$
+.svn
